@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sped.lol Claim</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, black, blue);
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        form {
+            background-color: rgba(0, 0, 255, 0.8); /* Semi-transparent blue */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .notification {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: blue;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none; /* Hidden by default */
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification">Key will be sent to you shortly!</div>
+    <form id="claimForm">
+        <h2>Sped.lol Claim</h2>
+        <input type="email" id="email" placeholder="Your Email" required>
+        <input type="text" id="discordUsername" placeholder="Discord Username" required>
+        <input type="text" id="ticketNumber" placeholder="Ticket Number" required>
+        <input type="text" id="keyDuration" placeholder="Key Duration Bought" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('claimForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const discordUsername = document.getElementById('discordUsername').value;
+            const ticketNumber = document.getElementById('ticketNumber').value;
+            const keyDuration = document.getElementById('keyDuration').value;
+
+            const webhookURL = 'https://discord.com/api/webhooks/1290067874110509066/2M2i77A42HUaYQBe1VcrNxYZ8vRX1z7SFHTN2ZSq3SqdKR5MMDF6ApO6dqMO7MtPzYqQ';
+
+            const data = {
+                content: `Email: ${email}\nDiscord Username: ${discordUsername}\nTicket Number: ${ticketNumber}\nKey Duration: ${keyDuration}`
+            };
+
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    showNotification();
+                } else {
+                    alert('Error submitting claim.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting claim.');
+            });
+        });
+
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000); // Notification will disappear after 3 seconds
+        }
+    </script>
+</body>
+</html>
